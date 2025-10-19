@@ -37,15 +37,20 @@ Descargar el reposotirio
 
 ## Para levantar el contenedor, ejecutar los comandos en la carpeta raiz
 
-docker-compose build
+* Validar que el appsettings.json esté auntando a la base de datos del contenedor
 
-docker-compose up -d
+<img width="435" height="108" alt="image" src="https://github.com/user-attachments/assets/556ca705-8385-4f22-9d05-60c2f0a66733" />
 
+* Ejecutar los scripts de ser necesario como en el punto anterior
 
-Sepuede verificar si esta corriendo con 
+* Ejecutar el siguiente comando para crear la imagen docker
+  
+    `docker compose build --no-cache`
 
-docker ps
+* Ejecutar el siguiente comando para levantar la 
 
-Ejecutar el backend en 
+    `docker-compose up`
 
-http://localhost:8080/swagger
+* Ir a la siguiente web y se accede nuevamente a la api en swagger
+  
+    http://localhost:8080/swagger/index.html
