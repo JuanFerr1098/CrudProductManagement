@@ -1,0 +1,15 @@
+-- Creacion tabla productos
+IF NOT EXISTS (
+SELECT TOP 1 1 FROM [INFORMATION_SCHEMA].[TABLES] 
+WHERE [TABLE_SCHEMA] = 'masters' AND [TABLE_NAME] = 'productos')
+BEGIN
+	CREATE TABLE masters.Productos (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre NVARCHAR(100) NOT NULL,
+    Descripcion NVARCHAR(255),
+    Precio DECIMAL(10,2) NOT NULL,
+	Estado NVARCHAR(50) NOT NULL,
+    FechaCreacion DATETIME DEFAULT GETDATE()
+)
+END
+GO
