@@ -25,8 +25,24 @@ ALTER PROCEDURE masters.SP_CrearProducto
 )
 AS
 BEGIN
-	INSERT INTO Productos (Nombre, Descripcion, Precio, Estado, FechaCreacion)
-    VALUES (@Nombre, @Descripcion, @Precio, @Estado, GETDATE());
+	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
+	SET NOCOUNT ON
+	DECLARE @strMsg VARCHAR(2000)
+	BEGIN TRY
+		BEGIN TRAN
+			INSERT INTO Productos (Nombre, Descripcion, Precio, Estado, FechaCreacion)
+			VALUES (@Nombre, @Descripcion, @Precio, @Estado, GETDATE());
+			declare @Id int;
+			set @id = (SELECT MAX(ID) FROM masters.Productos)
+		COMMIT TRAN
+	exec masters.SP_ObtenerProductoPorId @Id;
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRAN
+		SET @strMsg = 'Error en masters.SP_CrearProducto' + ERROR_MESSAGE()
+		RAISERROR(@strMsg,16,1)	
+	END CATCH
 END
 GO
 
@@ -111,12 +127,26 @@ ALTER PROCEDURE masters.SP_ActualizarProducto
 )
 AS
 BEGIN
-    UPDATE Productos
-    SET Nombre = @Nombre,
-        Descripcion = @Descripcion,
-        Precio = @Precio,
-		Estado = @Estado
-    WHERE Id = @Id;
+	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
+	SET NOCOUNT ON
+	DECLARE @strMsg VARCHAR(2000)
+	BEGIN TRY
+		BEGIN TRAN
+			UPDATE Productos
+			SET Nombre = @Nombre,
+				Descripcion = @Descripcion,
+				Precio = @Precio,
+				Estado = @Estado
+			WHERE Id = @Id;
+		COMMIT TRAN
+		exec masters.SP_ObtenerProductoPorId @Id;
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRAN
+		SET @strMsg = 'Error en masters.SP_ActualizarProducto' + ERROR_MESSAGE()
+		RAISERROR(@strMsg,16,1)	
+	END CATCH
 END
 GO
 
@@ -145,9 +175,23 @@ ALTER PROCEDURE masters.SP_EliminarProducto
 )
 AS
 BEGIN
-    UPDATE Productos
-    SET Estado = @Estado
-    WHERE Id = @Id;
+	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED  
+	SET NOCOUNT ON
+	DECLARE @strMsg VARCHAR(2000)
+	BEGIN TRY
+		BEGIN TRAN
+			UPDATE Productos
+			SET Estado = @Estado
+			WHERE Id = @Id;
+		COMMIT TRAN
+		exec masters.SP_ObtenerProductoPorId @Id;
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRAN
+		SET @strMsg = 'Error en masters.SP_EliminarProducto' + ERROR_MESSAGE()
+		RAISERROR(@strMsg,16,1)	
+	END CATCH
 END;
 GO
 
@@ -175,6 +219,6 @@ ALTER PROCEDURE masters.SP_ObtenerProductoPorNombre
 )
 AS
 BEGIN
-    SELECT * FROM Productos WHERE UPPER(Nombre) LIKE @Nombre;
+    SELECT * FROM Productos WHERE UPPER(Nombre) LIKE '%' + UPPER(@Nombre) + '%';
 END
 GO
