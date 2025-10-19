@@ -3,6 +3,7 @@ using Domain.Entities;
 using Domain.Interfaces.Infraestructure;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace Infraestrutcure.SQLServer
 {
@@ -13,24 +14,54 @@ namespace Infraestrutcure.SQLServer
             _dataBase = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public Task<Producto> ActualizarProducto(Producto producto)
+        public async Task<Producto> ActualizarProducto(Producto producto)
         {
-            throw new NotImplementedException();
+            var values = new { producto.Id, producto.Nombre, producto.Descripcion, producto.Precio, producto.Estado };
+            using var conn = new SqlConnection(_dataBase);
+            var result = (await conn.QueryAsync<Producto>("masters.SP_ActualizarProducto", values, commandType: CommandType.StoredProcedure)).FirstOrDefault();
+            await conn.CloseAsync();
+            await conn.DisposeAsync();
+            return result;
         }
 
-        public Task<Producto> CrearProducto(Producto producto)
+        public async Task<Producto> CrearProducto(Producto producto)
         {
-            throw new NotImplementedException();
+            var values = new { producto.Nombre, producto.Descripcion, producto.Precio, producto.Estado };
+            using var conn = new SqlConnection(_dataBase);
+            var result = (await conn.QueryAsync<Producto>("masters.SP_CrearProducto", values, commandType: CommandType.StoredProcedure)).FirstOrDefault();
+            await conn.CloseAsync();
+            await conn.DisposeAsync();
+            return result;
         }
 
-        public Task<Producto> EliminarProducto(Producto producto)
+        public async Task<Producto> EliminarProducto(Producto producto)
         {
-            throw new NotImplementedException();
+            var values = new { producto.Id, producto.Estado };
+            using var conn = new SqlConnection(_dataBase);
+            var result = (await conn.QueryAsync<Producto>("masters.SP_EliminarProducto", values, commandType: CommandType.StoredProcedure)).FirstOrDefault();
+            await conn.CloseAsync();
+            await conn.DisposeAsync();
+            return result;
         }
 
-        public Task<Producto> ObtenerProductoPorId(int id)
+        public async Task<Producto> ObtenerProductoPorId(int id)
         {
-            throw new NotImplementedException();
+            var values = new { id };
+            using var conn = new SqlConnection(_dataBase);
+            var result = (await conn.QueryAsync<Producto>("masters.SP_ObtenerProductoPorId", values, commandType: CommandType.StoredProcedure)).FirstOrDefault();
+            await conn.CloseAsync();
+            await conn.DisposeAsync();
+            return result;
+        }
+
+        public async Task<IReadOnlyList<Producto>> ObtenerProductoPorNombre(string nombre)
+        {
+            var values = new { nombre };
+            using var conn = new SqlConnection(_dataBase);
+            var result = await conn.QueryAsync<Producto>("masters.SP_ObtenerProductoPorNombre", values, commandType: CommandType.StoredProcedure);
+            await conn.CloseAsync();
+            await conn.DisposeAsync();
+            return result.ToList();
         }
 
         public async Task<IReadOnlyList<Producto>> ObtenerTodosProductosAsync()

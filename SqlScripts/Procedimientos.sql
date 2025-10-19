@@ -150,3 +150,31 @@ BEGIN
     WHERE Id = @Id;
 END;
 GO
+
+IF NOT EXISTS (
+    SELECT TOP 1 1 
+    FROM [sys].[objects] 
+    WHERE [type] = 'P' 
+    AND [object_id] = OBJECT_ID('masters.SP_ObtenerProductoPorNombre')
+)
+   exec('CREATE PROCEDURE masters.SP_ObtenerProductoPorNombre AS ')
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author: juan.tamayo
+-- Create date: 18/10/2025
+-- Description:	Obtiene un producto por id
+-- exec masters.SP_ObtenerProductoPorNombre @Nombre = 'Producto'
+-- =============================================
+ALTER PROCEDURE masters.SP_ObtenerProductoPorNombre
+(
+	@Nombre NVARCHAR(200)
+)
+AS
+BEGIN
+    SELECT * FROM Productos WHERE UPPER(Nombre) LIKE @Nombre;
+END
+GO

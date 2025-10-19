@@ -6,6 +6,7 @@ namespace Domain.Interfaces.Application
     {
         Task<IReadOnlyList<ProductoDto>> ObtenerTodosProductosAsync();
         Task<ProductoDto> ObtenerProductoPorId(int id);
+        Task<IReadOnlyList<ProductoDto>> ObtenerProductoPorNombre(string nombre);
         Task<ProductoDto> CrearProducto(ProductoDto producto);
         Task<ProductoDto> ActualizarProducto(ProductoDto producto);
         Task<ProductoDto> EliminarProducto(ProductoDto producto);

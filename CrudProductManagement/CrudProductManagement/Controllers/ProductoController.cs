@@ -39,6 +39,61 @@ namespace CrudProductManagement.Controllers
 
         [AllowAnonymous]
         [HttpGet]
+        [Route("nombre/{NombreProducto}")]
+        public async Task<IActionResult> GetByName([FromRoute] string NombreProducto)
+        { 
+            var result = await _productoBL.ObtenerProductoPorNombre(NombreProducto);
+            if (result != null)
+                return await GetResponseAsync(HttpStatusCode.OK, "Ejecución correcta", result);
+            return await GetResponseAsync<ProductoDto>(HttpStatusCode.BadRequest, "Error en la consulta", null);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("id/{IdProducto}")]
+        public async Task<IActionResult> GetById([FromRoute] int IdProducto)
+        {
+            var result = await _productoBL.ObtenerProductoPorId(IdProducto);
+            if (result != null)
+                return await GetResponseAsync(HttpStatusCode.OK, "Ejecución correcta", result);
+            return await GetResponseAsync<ProductoDto>(HttpStatusCode.BadRequest, "Error en la consulta", null);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("borrar")]
+        public async Task<IActionResult> Delete([FromBody] ProductoDto producto)
+        {
+            var result = await _productoBL.EliminarProducto(producto);
+            if (result != null)
+                return await GetResponseAsync(HttpStatusCode.OK, "Ejecución correcta", result);
+            return await GetResponseAsync<ProductoDto>(HttpStatusCode.BadRequest, "Error en la consulta", null);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("crear")]
+        public async Task<IActionResult> Insert([FromBody] ProductoDto producto)
+        {
+            var result = await _productoBL.CrearProducto(producto);
+            if (result != null)
+                return await GetResponseAsync(HttpStatusCode.OK, "Ejecución correcta", result);
+            return await GetResponseAsync<ProductoDto>(HttpStatusCode.BadRequest, "Error en la consulta", null);
+        }
+
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("actualizar")]
+        public async Task<IActionResult> Update([FromBody] ProductoDto producto)
+        {
+            var result = await _productoBL.ActualizarProducto(producto);
+            if (result != null)
+                return await GetResponseAsync(HttpStatusCode.OK, "Ejecución correcta", result);
+            return await GetResponseAsync<ProductoDto>(HttpStatusCode.BadRequest, "Error en la consulta", null);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
         public async Task<IActionResult> GetAll() {
             var result = await _productoBL.ObtenerTodosProductosAsync();
             if (result != null)
