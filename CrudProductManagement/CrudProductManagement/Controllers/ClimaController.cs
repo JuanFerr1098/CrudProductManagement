@@ -14,10 +14,11 @@ namespace CrudProductManagement.Controllers
             _climaBL = climaBL;
         }
 
-        [HttpGet("medellin")]
-        public async Task<IActionResult> ObtenerClimaMedellin()
+        [HttpGet]
+        [Route("ciudad/{ciudad}")]
+        public async Task<IActionResult> ObtenerClimaMedellin([FromRoute] string ciudad)
         {
-            var resultado = await _climaBL.ObtenerClimaMedellinAsync();
+            var resultado = await _climaBL.ObtenerClimaMedellinAsync(ciudad);
 
             if (resultado == null)
                 return NotFound("No se pudo obtener el clima de Medellín.");

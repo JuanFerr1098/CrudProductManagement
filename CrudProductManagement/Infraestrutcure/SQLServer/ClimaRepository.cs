@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces.Infraestructure;
+using Newtonsoft.Json.Linq;
 using System.Net.Http.Json;
 
 namespace Infraestrutcure.SQLServer
@@ -23,17 +24,16 @@ namespace Infraestrutcure.SQLServer
             if (!respuesta.IsSuccessStatusCode)
                 return null;
 
-            Console.WriteLine(respuesta);
-            var datos = await respuesta.Content.ReadFromJsonAsync<dynamic>();
+            var datos = await respuesta.Content.ReadFromJsonAsync<ClimaResponse>();
 
             return new Clima
             {
-                Ciudad = datos["name"],
-                Descripcion = datos["weather"][0]["description"],
-                Temperatura = datos["main"]["temp"],
-                SensacionTermica = datos["main"]["feels_like"],
-                Humedad = datos["main"]["humidity"],
-                VelocidadViento = datos["wind"]["speed"],
+                Ciudad = datos.Name,
+                Descripcion = datos.Weather[0].Description,
+                Temperatura = datos.Main.Temp,
+                SensacionTermica = datos.Main.Feels_Like,
+                Humedad = datos.Main.Humidity,
+                VelocidadViento = datos.Wind.Speed,
                 FechaConsulta = DateTime.UtcNow
             };
         }

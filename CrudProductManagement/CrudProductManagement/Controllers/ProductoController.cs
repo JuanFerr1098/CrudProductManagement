@@ -37,7 +37,6 @@ namespace CrudProductManagement.Controllers
             });
         }
 
-        [AllowAnonymous]
         [HttpGet]
         [Route("nombre/{NombreProducto}")]
         public async Task<IActionResult> GetByName([FromRoute] string NombreProducto)
@@ -48,7 +47,6 @@ namespace CrudProductManagement.Controllers
             return await GetResponseAsync<ProductoDto>(HttpStatusCode.BadRequest, "Error en la consulta", null);
         }
 
-        [AllowAnonymous]
         [HttpGet]
         [Route("id/{IdProducto}")]
         public async Task<IActionResult> GetById([FromRoute] int IdProducto)
@@ -59,7 +57,6 @@ namespace CrudProductManagement.Controllers
             return await GetResponseAsync<ProductoDto>(HttpStatusCode.BadRequest, "Error en la consulta", null);
         }
 
-        [AllowAnonymous]
         [HttpPost]
         [Route("borrar")]
         public async Task<IActionResult> Delete([FromBody] ProductoDto producto)
@@ -70,7 +67,6 @@ namespace CrudProductManagement.Controllers
             return await GetResponseAsync<ProductoDto>(HttpStatusCode.BadRequest, "Error en la consulta", null);
         }
 
-        [AllowAnonymous]
         [HttpPost]
         [Route("crear")]
         public async Task<IActionResult> Insert([FromBody] ProductoDto producto)
@@ -81,7 +77,6 @@ namespace CrudProductManagement.Controllers
             return await GetResponseAsync<ProductoDto>(HttpStatusCode.BadRequest, "Error en la consulta", null);
         }
 
-        [AllowAnonymous]
         [HttpPut]
         [Route("actualizar")]
         public async Task<IActionResult> Update([FromBody] ProductoDto producto)
@@ -92,7 +87,6 @@ namespace CrudProductManagement.Controllers
             return await GetResponseAsync<ProductoDto>(HttpStatusCode.BadRequest, "Error en la consulta", null);
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll() {
             var result = await _productoBL.ObtenerTodosProductosAsync();

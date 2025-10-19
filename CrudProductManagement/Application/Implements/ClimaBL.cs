@@ -5,7 +5,7 @@ using Domain.Interfaces.Infraestructure;
 
 namespace Application.Implements
 {
-    public class ClimaBL :IClimaBL
+    public class ClimaBL : IClimaBL
     {
         private readonly IClimaRepository _repository;
         private readonly IMapper _mapper;
@@ -16,9 +16,9 @@ namespace Application.Implements
             _mapper = mapper;
         }
 
-        public async Task<ClimaDto?> ObtenerClimaMedellinAsync()
+        public async Task<ClimaDto?> ObtenerClimaMedellinAsync(string ciudad)
         {
-            var entidad = await _repository.ObtenerClimaAsync("Medellin");
+            var entidad = await _repository.ObtenerClimaAsync(ciudad);
             if (entidad == null) return null;
 
             return _mapper.Map<ClimaDto>(entidad);
