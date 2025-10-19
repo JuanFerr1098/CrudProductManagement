@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="dockerfile" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="dockerfile" />
   </ItemGroup>
 
   <ItemGroup>

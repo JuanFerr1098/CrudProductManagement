@@ -1,16 +1,16 @@
+version: "3.9"
+
 services:
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: crud_db
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Juanferr1098!
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Juanferr1098!"
     ports:
       - "1433:1433"
     volumes:
       - sql_data:/var/opt/mssql
-    networks:
-      - crud_network
 
   api:
     build:
@@ -23,9 +23,7 @@ services:
       - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Database=CrudProduct;User Id=sa;Password=TuPasswordSeguro123!;TrustServerCertificate=True;
-    networks:
-      - crud_network
+      - ConnectionStrings__DefaultConnection=Server=db;Database=CrudProduct;User Id=sa;Password=Juanferr1098!;TrustServerCertificate=True;
 
 volumes:
   sql_data:
