@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Infraestructure;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
@@ -10,7 +10,7 @@ namespace Infraestrutcure.SQLServer
     {
         private readonly string? _dataBase;
         public ProductoRepository(IConfiguration configuration) {
-            _dataBase = configuration.GetConnectionString("Server = localhost, 1433; Database = CrudProduct; User Id = sa; Password = Juanferr1098!; TrustServerCertificate = True; ");
+            _dataBase = configuration.GetConnectionString("DefaultConnection");
         }
 
         public Task<Producto> ActualizarProducto(Producto producto)

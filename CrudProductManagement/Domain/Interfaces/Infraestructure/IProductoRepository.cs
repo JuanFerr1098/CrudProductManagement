@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Domain.Interfaces
+namespace Domain.Interfaces.Infraestructure
 {
     public interface IProductoRepository
     {
@@ -9,6 +9,5 @@ namespace Domain.Interfaces
         Task<Producto> CrearProducto(Producto producto);
         Task<Producto> ActualizarProducto(Producto producto);
         Task<Producto> EliminarProducto(Producto producto);
-
     }
 }
